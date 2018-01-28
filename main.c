@@ -23,8 +23,6 @@ static void testResistanceLib()
 int main()
 {
 
-	char line[100];
-	int sum = 0;
 	int voltage = 0;
 	char koppling;
 	int numberOfComponents = 0;
