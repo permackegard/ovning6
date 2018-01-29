@@ -1,9 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include "libs/resistance/resistance.h"
+#include "libs/power/power.h"
 #include "libs/component/component.h"
 
 static void testResistanceLib();
+static void testPowerLib();
 static void testComponentLib();
 
 static void testResistanceLib()
@@ -17,6 +19,22 @@ static void testResistanceLib()
 
 
 	printf("%f\n", sum);
+}
+
+static void testPowerLib()
+{
+
+	float volt = 12;
+	float resistance = 100; 
+	float current  = 1;
+
+	float power_r = calc_power_r( volt, resistance);
+
+	float power_i = calc_power_i( volt, current);
+
+
+	printf("power_r %f\n", power_r);
+	printf("power_i %f\n", power_i);
 }
 
 static void testComponentLib() 
@@ -67,8 +85,10 @@ int main()
 
 	// ToDo: Add support for when user adds several components. Add dynmic allocation then.
 
-	// Just for testing resistance lib right no
+	// Just for testing libs
 	testResistanceLib();
+	testPowerLib();
 	testComponentLib();
+
 	return 0;
 }
