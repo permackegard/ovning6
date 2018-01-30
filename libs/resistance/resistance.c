@@ -64,9 +64,9 @@ static bool validateInput(int count, char conn, float *array)
 
 	for(int i = 0; i < count; i++)
 	{
-		if( array[i] < 0)
+		if( array[i*sizeof(float)] < 0)
 		{
-			printf("The resistance is incorrect: %f\n", array[i]);
+			printf("The resistor is incorrect: %f\n", array[i*sizeof(float)]);
 			return false;
 		}
 	}
