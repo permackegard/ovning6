@@ -17,7 +17,7 @@ static float calc_serial_resistance( int count, float *array)
 
 	for( int i = 0; i < count; i++)
 	{
-		totalResistance += array[i];
+		totalResistance += array[i*sizeof(float)];
 	}
 
 	return totalResistance;
@@ -32,7 +32,7 @@ static float calc_parallell_resistance( int count, float *array)
 
 	for( int i = 0; i < count; i++)
 	{
-		totalResistance += 1/array[i];
+		totalResistance += 1/array[i*sizeof(float)];
 	}
 
 	totalResistance = 1/totalResistance;
