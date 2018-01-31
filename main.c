@@ -80,8 +80,17 @@ int main()
     }
 
     float sum = calc_resistance( numberOfComponents, koppling, resistorPtr);
-    printf("Ersättningsresistans:\n");
-	printf("%.1f ohm\n", sum);
+    if (sum < 0)
+    {
+    	printf("Resistance bibliotektet returnerade error. Felaktig input?\n");
+    	return 0;
+    }
+    else
+    {
+    	printf("Ersättningsresistans:\n");
+		printf("%.1f ohm\n", sum);
+    }
+
 
 	// ToDo: Add support for when user adds several components. Add dynmic allocation then.
 
