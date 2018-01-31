@@ -4,100 +4,62 @@
 #include "libs/power/power.h"
 #include "libs/component/component.h"
 
-static void testPowerLib();
-static void testComponentLib();
-
-
-static void testPowerLib()
-{
-
-	float volt = 12;
-	float resistance = 100; 
-	float current  = 1;
-
-	float power_r = calc_power_r( volt, resistance);
-
-	float power_i = calc_power_i( volt, current);
-
-
-	printf("power_r %f\n", power_r);
-	printf("power_i %f\n", power_i);
-}
-
-static void testComponentLib() 
-{
-	float *testArray = (float*) malloc(sizeof(float[3]));
-	float orig_resistance = 300;
-	testArray[0] = 100;
-	testArray[1] = 200;
-	testArray[2] = 300;
-
-
-	int count = e_resistance(orig_resistance, testArray);
-	printf("0: %f\n", testArray[0]);
-	printf("1: %f\n", testArray[1]);
-	printf("2: %f\n", testArray[2]);
-	printf("Count: %i\n", count); 
-
-
-	orig_resistance = 1000;
-	testArray[0] = 100;
-	testArray[1] = 500;
-	testArray[2] = 300;
-
-
-	count = e_resistance(orig_resistance, testArray);
-	printf("0: %f\n", testArray[0]);
-	printf("1: %f\n", testArray[1]);
-	printf("2: %f\n", testArray[2]);
-	printf("Count: %i\n", count); 
-}
-
-
- 
 int main()
 {
 
-	int voltage = 0;
-	char koppling;
-	int numberOfComponents = 0;
-	float *resistorPtr = NULL;
+    int voltage = 0;
+    char koppling;
+    int numberOfComponents = 0;
+    float *resistorPtr = NULL;
 
-	printf("Ange spänningskälla I V: ");
-	scanf("%d", &voltage);
-	printf("Ange koppling[S | P]: ");
-	scanf(" %c", &koppling);
-	printf("Antal komponenter: ");
-	scanf(" %d", &numberOfComponents);
+    printf("Ange spänningskälla I V: ");
+    scanf("%d", &voltage);
+    printf("Ange koppling[S | P]: ");
+    scanf(" %c", &koppling);
+    printf("Antal komponenter: ");
+    scanf(" %d", &numberOfComponents);
 
-    /* Initial memory allocation */
     resistorPtr = (float *) malloc( numberOfComponents * sizeof(float));
 
     for(int i = 0; i< numberOfComponents; i++)
     {
-    	printf("Komponent %d | ohm: ", i + 1);
-    	scanf("%f", resistorPtr+(i*sizeof(float)));
+        printf("Komponent %d | ohm: ", i + 1);
+        scanf("%f", resistorPtr+(i*sizeof(float)));
     }
 
     float sum = calc_resistance( numberOfComponents, koppling, resistorPtr);
     if (sum < 0)
     {
-    	printf("Resistance bibliotektet returnerade error. Felaktig input?\n");
-    	return 0;
+        printf("Resistance bibliotektet returnerade error. Felaktig input?\n");
+        return 0;
     }
     else
     {
-    	printf("Ersättningsresistans:\n");
-		printf("%.1f ohm\n", sum);
+        printf("Ersättningsresistans:\n");
+        printf("%.1f ohm\n", sum);
     }
 
+    // ToDo Fix the the right "rounding?" Now we get 1,79 and it should be 1,78 according to the text.
 
-	// ToDo: Add support for when user adds several components. Add dynmic allocation then.
+    float power_r = calc_power_r( voltage, sum);
+    printf("Effekt:\n");
+    printf("%.2f\n", power_r);
 
-	testPowerLib();
-	testComponentLib();
+    // ToDo Fix outputs
 
-	free(resistorPtr);
+    float *e12Array = (float*) malloc(sizeof(float[3]));
 
-	return 0;
+    int count = e_resistance( sum, e12Array);
+
+    printf("Ersättningsresistanser i E12-serien kopplade i serie: \n");
+
+    for(int i = 0; i< count; i++)
+    {
+        printf("%.f\n", e12Array[i]);
+    }
+
+    free(resistorPtr);
+    free(e12Array);
+
+    return 0;
 }
