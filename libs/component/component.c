@@ -13,9 +13,6 @@ static float insert_resistance(float orig_resistance, float *res_array, float *r
 
 static int find_fitting_resistance(float orig_resistance, float *res_array)
 {
-    float difference = orig_resistance * 0.1;
-    float min = orig_resistance - difference;
-    float max = orig_resistance + difference;
     float current_resistance = orig_resistance;
 
     if(current_resistance >= 1000.0 && current_resistance <= 20600) 
