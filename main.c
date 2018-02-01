@@ -52,8 +52,8 @@ int main()
     int count = e_resistance( sum, e12Array);
 
     printf("Ersättningsresistanser i E12-serien kopplade i serie: \n");
-
-    for(int i = 0; i< count; i++)
+    
+    for(int i = 0; i < count; i++)
     {
         printf("%.f\n", e12Array[i]);
     }
