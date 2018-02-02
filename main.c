@@ -12,7 +12,7 @@ int main()
     int numberOfComponents = 0;
     float *resistorPtr = NULL;
 
-    printf("Ange spänningskälla I V: ");
+    printf("Ange spänningskälla | V: ");
     scanf("%d", &voltage);
     printf("Ange koppling[S | P]: ");
     scanf(" %c", &koppling);
@@ -39,13 +39,9 @@ int main()
         printf("%.1f ohm\n", sum);
     }
 
-    // ToDo Fix the the right "rounding?" Now we get 1,79 and it should be 1,78 according to the text.
-
     float power_r = calc_power_r( voltage, sum);
     printf("Effekt:\n");
     printf("%.2f\n", power_r);
-
-    // ToDo Fix outputs
 
     float *e12Array = (float*) malloc(sizeof(float[3]));
 
