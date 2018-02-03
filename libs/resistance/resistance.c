@@ -3,8 +3,6 @@
 #include "stdio.h"
 #include "stdbool.h"
 
-// Author Per Mackegård 20180128
-
 static bool validateInput(int count, char conn, float *array);
 static float calc_serial_resistance( int count, float *array);
 static float calc_parallell_resistance( int count, float *array);
@@ -17,7 +15,7 @@ static float calc_serial_resistance( int count, float *array)
 
 	for( int i = 0; i < count; i++)
 	{
-		totalResistance += array[i*sizeof(float)];
+		totalResistance += array[i];
 	}
 
 	return totalResistance;
@@ -32,7 +30,7 @@ static float calc_parallell_resistance( int count, float *array)
 
 	for( int i = 0; i < count; i++)
 	{
-		totalResistance += 1/array[i*sizeof(float)];
+		totalResistance += 1/array[i];
 	}
 
 	totalResistance = 1/totalResistance;
@@ -48,25 +46,21 @@ static bool validateInput(int count, char conn, float *array)
 
 	if(count <= 0)
 	{
-		printf("The count of items are incorrect: %d\n", count);
 		return false;
 	}
 	else if( conn != 'S' && conn != 'P')
 	{
-		printf("Not a valid connection type: %c\n", conn);
 		return false;
 	}
 	else if( array == NULL )
 	{
-		printf("Array is NULL\n");
-		return false;	
+		return false;
 	}
 
 	for(int i = 0; i < count; i++)
 	{
-		if( array[i*sizeof(float)] < 0)
+		if( array[i] < 0 )
 		{
-			printf("The resistor is incorrect: %f\n", array[i*sizeof(float)]);
 			return false;
 		}
 	}
@@ -82,7 +76,7 @@ float calc_resistance(int count, char conn, float *array)
 
 	float totalResistance = -1;
 
-	// If validateInput returns  < 0 the input is incorrect
+	// If validateInput returns -1 the input is incorrect
 
 	if( !validateInput(count,conn,array) )
 	{

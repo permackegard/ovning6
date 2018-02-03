@@ -24,7 +24,7 @@ int main()
     for(int i = 0; i< numberOfComponents; i++)
     {
         printf("Komponent %d | ohm: ", i + 1);
-        scanf("%f", resistorPtr+(i*sizeof(float)));
+        scanf("%f", &resistorPtr[i]);
     }
 
     float sum = calc_resistance( numberOfComponents, koppling, resistorPtr);
