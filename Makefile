@@ -8,9 +8,13 @@ LOCALLIBDIR = /usr/lib
 INSTALLDIR = /usr/bin
 LDFLAGS = -L$(LOCALLIBDIR)
 
-LIBRESISTANCE = libs/resistance/libresistance.so
-LIBPOWER = libs/power/libpower.so
-LIBCOMPONENT = libs/component/libcomponent.so
+LIBRESISTANCE_PATH = libs/resistance
+LIBPOWER_PATH = libs/power
+LIBCOMPONENT_PATH = libs/component
+
+LIBRESISTANCE = libresistance.so
+LIBPOWER = libpower.so
+LIBCOMPONENT = libcomponent.so
 
 # For "local installation"
 
@@ -33,29 +37,34 @@ COMPONENT_LIBFLAG_PUBLIC = -L$(LOCALLIBDIR) -lcomponent -Wl,-rpath,'$(LOCALLIBDI
 
 
 
-lib:		libs/resistance/resistance.c libs/power/power.c libs/component/component.c
+lib:		$(LIBRESISTANCE_PATH)/resistance.c $(LIBPOWER_PATH)/power.c $(LIBCOMPONENT_PATH)/component.c
 			# Resistance
-			$(CC) -c -fPIC libs/resistance/resistance.c -o libs/resistance/resistance.o
-			$(CC) -shared -fPIC -o libs/resistance/libresistance.so libs/resistance/resistance.o
+			$(CC) -c -fPIC $(LIBRESISTANCE_PATH)/resistance.c -o $(LIBRESISTANCE_PATH)/resistance.o
+			$(CC) -shared -fPIC -o $(LIBRESISTANCE_PATH)/$(LIBRESISTANCE) $(LIBRESISTANCE_PATH)/resistance.o
 			# Power
-			$(CC) -c -fPIC libs/power/power.c -o libs/power/power.o
-			$(CC) -shared -fPIC -o libs/power/libpower.so libs/power/power.o
+			$(CC) -c -fPIC $(LIBPOWER_PATH)/power.c -o $(LIBPOWER_PATH)/power.o
+			$(CC) -shared -fPIC -o $(LIBPOWER_PATH)/$(LIBPOWER) $(LIBPOWER_PATH)/power.o
 			# Component
-			$(CC) -c -fPIC libs/component/component.c -o libs/component/component.o
-			$(CC) -shared -fPIC -o libs/component/libcomponent.so libs/component/component.o
-
+			$(CC) -c -fPIC $(LIBCOMPONENT_PATH)/component.c -o $(LIBCOMPONENT_PATH)/component.o
+			$(CC) -shared -fPIC -o $(LIBCOMPONENT_PATH)/$(LIBCOMPONENT) $(LIBCOMPONENT_PATH)/component.o
 
 all:		main.c
-			$(CC) $(CFLAGS) -o $(PROG) main.c $(RESISTANCE_LIBFLAG) $(COMPONENT_LIBFLAG) $(POWER_LIBFLAG) # Add rest of libs here
+			$(CC) $(CFLAGS) -o $(PROG) main.c $(RESISTANCE_LIBFLAG) $(COMPONENT_LIBFLAG) $(POWER_LIBFLAG)
 
 install:
-			sudo rm -f *~ *.o $(PROG) # just to be sure that $(PROG) is rebuilt later. Is this necessary?
-	 		sudo install -m 0755 $(LIBRESISTANCE) $(LIBPOWER) $(LIBCOMPONENT) $(LOCALLIBDIR) # copies the libraries. Add your libs here
-	 		$(CC) $(CFLAGS) -o $(PROG) main.c $(RESISTANCE_LIBFLAG_PUBLIC) $(POWER_LIBFLAG_PUBLIC) $(COMPONENT_LIBFLAG_PUBLIC)  # add your libs here
+			sudo rm -f *~ *.o $(PROG) # just to be sure that $(PROG) is rebuilt later.
+	 		sudo install -m 0755 $(LIBRESISTANCE) $(LIBPOWER) $(LIBCOMPONENT) $(LOCALLIBDIR)
+	 		$(CC) $(CFLAGS) -o $(PROG) main.c $(RESISTANCE_LIBFLAG_PUBLIC) $(POWER_LIBFLAG_PUBLIC) $(COMPONENT_LIBFLAG_PUBLIC)
 	 		sudo install -m 0755 $(PROG) $(INSTALLDIR)
 
 uninstall:
 			sudo rm -f $(INSTALLDIR)/$(PROG)
+			sudo rm -f $(LOCALLIBDIR)/$(LIBRESISTANCE)
+			sudo rm -f $(LOCALLIBDIR)/$(LIBPOWER)
+			sudo rm -f $(LOCALLIBDIR)/$(LIBCOMPONENT)
 
 clean:
 			sudo rm -f *~ *.o $(PROG)
+			sudo rm -f $(LIBRESISTANCE)
+			sudo rm -f $(LIBPOWER)
+			sudo rm -f $(LIBCOMPONENT)

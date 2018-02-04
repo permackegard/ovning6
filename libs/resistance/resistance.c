@@ -35,7 +35,6 @@ static float calc_parallell_resistance( int count, float *array)
 
 	totalResistance = 1/totalResistance;
 
-
 	return totalResistance;
 
 }
